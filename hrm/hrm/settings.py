@@ -25,7 +25,10 @@ SECRET_KEY = 'ii#_^&i4i)q)16&awka5yahgjhx=7-!#jvnl!c&)(^jkaal^=c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'testserver',
+]
 
 
 # Application definition
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'department_app',
 ]
 
@@ -86,6 +90,9 @@ DATABASES = {
 }
 
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -123,3 +130,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Logging settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'msg_format': {
+            'format': '[%(asctime)s] [%(levelname)s] | %(module)s: %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'msg_format',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': '../debug.log',
+            'formatter': 'msg_format',
+        },
+    },
+    'loggers': {
+        'django': {
+            'level': 'DEBUG',
+            'handlers': ['file', 'console'],
+            'filters': ['require_debug_true', 'require_debug_false'],
+        }
+    }
+}
